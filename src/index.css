@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Jockey+One&family=Josefin+Sans:wght@200&family=Poppins:wght@200&family=Sansita&display=swap');
+
+/* .text-outlined {
+    text-shadow: 1px 1px solid black;
+} */
+
+.text-shadow-theme{
+     text-shadow:  1px 1px #4bb7d3;
+}
+.text-shadow-theme-Alt {
+     text-shadow: 1px 1px #f7f6f1;
+}
+
+.transform-up-down {
+    animation: upToDown .4s ease linear;
+}
+@keyframes upToDown {
+     0%{ 
+          transform: translateY(100%);
+     }100%{ 
+          transform: translateY(0%);
+     }
+}
