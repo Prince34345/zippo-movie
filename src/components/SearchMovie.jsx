@@ -29,8 +29,8 @@ const SearchMovie = ({ loading }) => {
       setResponses([ ...Responses , ...arr])
     // console.log("res",res);
   }
-  async function SearchQuery () {
-    const res = await SearchMedia(InputValue, 'movie')
+  async function SearchQuery (val) {
+    const res = await SearchMedia(val, 'movie')
     let appendArr = []
     function Append () {
         res?.results?.forEach((curElem) => {
@@ -50,7 +50,14 @@ const SearchMovie = ({ loading }) => {
     GetResponse() && loading(100);
     // console.log(Responses);
   }, []);
-  
+  function handleSearch (e) {
+      setInputValue(e.target.value)
+      if (!e.target.value) {
+          GetResponse()
+      }else{
+        SearchQuery(e.target.value);
+      }
+  }
   return (
     <>
       <div className="rangeOuter:h-[100vh] left-0 top-0 absolute -z-50   w-full ">
@@ -63,8 +70,8 @@ const SearchMovie = ({ loading }) => {
       <div className="bg-black h-full w-full">
         <div className=" h-[10vh] flex justify-center items-center">
         <div className=" flex justify-center w-[40rem] h-1/2 bg-gren-700 items-center ">
-                <input type="text" value={InputValue} onChange={(e) => setInputValue(e.target.value)} className="outline-none text-ellipsis searchfield w-2/3 h-full pl-[9%] placeholder:font-Sansita font-Sansita flex justify-center items-center bg-transparent rounded-tl-xl rounded-bl-xl  text-Alt-theme  border-2 border-theme  placeholder:text-theme   focus:placeholder:text-Alt-theme " placeholder="Enter any Movie Name" />
-                <button onClick={() => SearchQuery()} className="text-Alt-theme  bg-theme h-full px-[3%] rounded-tr-xl rounded-br-xl cursor-pointer  "> <FaSearch/> </button>
+                <input type="text" value={InputValue} onChange={handleSearch} className="outline-none text-ellipsis searchfield w-2/3 h-full pl-[9%] placeholder:font-Sansita font-Sansita flex justify-center items-center bg-transparent rounded-tl-xl rounded-bl-xl  text-Alt-theme  border-2 border-theme  placeholder:text-theme   focus:placeholder:text-Alt-theme " placeholder="Enter any Movie Name" />
+                <button  className="text-Alt-theme  bg-theme h-full px-[3%] rounded-tr-xl rounded-br-xl cursor-pointer  "> <FaSearch/> </button>
         </div>
         </div>
 
