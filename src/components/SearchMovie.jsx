@@ -3,13 +3,16 @@ import { MovieMedia, SearchMedia } from "../API/Fetches";
 import {FaSearch } from "react-icons/fa"
 import  { MovieCard } from "./MovieComponents";
 import Footer from "./Footer";
+import Skeleton from "react-loading-skeleton";
 
 const SearchMovie = ({ loading }) => {
   const [InputValue, setInputValue] = useState("");
   const [Responses, setResponses] = useState([]);
   let page = 1
   const [Pages, setPages] = useState(2);
+  const [Loader, setLoader] = useState(false);
   async function GetResponse() {
+
     const res = await MovieMedia("popular", page)
     setResponses(res.results);
 
@@ -31,6 +34,11 @@ const SearchMovie = ({ loading }) => {
   }
   async function SearchQuery (val) {
     const res = await SearchMedia(val, 'movie')
+    if(!res) {
+        setLoader(true)
+    }else{
+        setLoader(false)
+    }
     let appendArr = []
     function Append () {
         res?.results?.forEach((curElem) => {
@@ -48,12 +56,11 @@ const SearchMovie = ({ loading }) => {
   }
   useEffect(() => {
     GetResponse() && loading(100);
-    // console.log(Responses);
   }, []);
   function handleSearch (e) {
       setInputValue(e.target.value)
       if (!e.target.value) {
-          GetResponse()
+        GetResponse();
       }else{
         SearchQuery(e.target.value);
       }
@@ -70,17 +77,18 @@ const SearchMovie = ({ loading }) => {
       <div className="bg-black h-full w-full">
         <div className=" h-[10vh] flex justify-center items-center">
         <div className=" flex justify-center w-[40rem] h-1/2 bg-gren-700 items-center ">
-                <input type="text" value={InputValue} onChange={handleSearch} className="outline-none text-ellipsis searchfield w-2/3 h-full pl-[9%] placeholder:font-Sansita font-Sansita flex justify-center items-center bg-transparent rounded-tl-xl rounded-bl-xl  text-Alt-theme  border-2 border-theme  placeholder:text-theme   focus:placeholder:text-Alt-theme " placeholder="Enter any Movie Name" />
+                <input type="text" value={InputValue} onChange={(e) => handleSearch}className="outline-none text-ellipsis searchfield w-2/3 h-full pl-[9%] placeholder:font-Sansita font-Sansita flex justify-center items-center bg-transparent rounded-tl-xl rounded-bl-xl  text-Alt-theme  border-2 border-theme  placeholder:text-theme   focus:placeholder:text-Alt-theme " placeholder="Enter any Movie Name" />
                 <button  className="text-Alt-theme  bg-theme h-full px-[3%] rounded-tr-xl rounded-br-xl cursor-pointer  "> <FaSearch/> </button>
         </div>
         </div>
 
        
           <div className="grid  grid-cols-4 max-lg:grid-cols-3  max-[325px]:grid-cols-2 ">
-            {Responses?.map((curElem, ind, arr) => {
-              return <MovieCard data={curElem} isNotMoviePage={false} />;
-              })}
-          </div>
+ {Responses?.map((curElem, ind, arr) => {
+        
+            return <MovieCard data={curElem} isNotMoviePage={false} />
+ })}
+ </div>
           <div className="flex justify-center items-center">
             {
                InputValue ? null :  <button onClick={() => fetchMore()} className="px-20 py-2 md:text-xl font-bold  m-5 bg-theme text-Alt-theme font-Josefin-Sans">Click to Load more</button>
@@ -91,5 +99,7 @@ const SearchMovie = ({ loading }) => {
     </>
   );
 };
+
+
 
 export default SearchMovie;
