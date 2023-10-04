@@ -19,7 +19,7 @@ jobs:
             run: yarn run build
           - name: Sets the vercel env
             run: |
-              cd dist
+              cd build
               mkdir .vercel
               touch project.json
               echo '{\"orgId\":\"$VERCEL_ORG_ID\",\"projectId\":\"$VERCEL_PROJECT_ID\"}' > project.json
